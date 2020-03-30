@@ -482,7 +482,7 @@ You can update a milestone for a particular organization and repository with `up
  To update a milestone for owner `47deg` and repository `github4s`:
 
 ```scala mdoc:compile-only
-val milestone = gh.issues.updateMilestone("47degrees", "github4s",1 , "New milestone",Some("open"), None, None)
+val milestone = gh.issues.updateMilestone("47degrees", "github4s", 1 , "New milestone", Some("open"), None, None)
 val response = milestone.unsafeRunSync()
 response.result match {
   case Left(e) => println(s"Something went wrong: ${e.getMessage}")
