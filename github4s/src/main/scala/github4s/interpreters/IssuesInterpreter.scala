@@ -232,4 +232,28 @@ class IssuesInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Optio
       headers,
       MilestoneData(title, state, description, due_on)
     )
+
+  override def updatedMilestone(
+      owner: String,
+      repo: String,
+      milestone_number: Int,
+      title: String,
+      state: Option[String],
+      description: Option[String],
+      due_on: Option[ZonedDateTime],
+      headers: Map[String, String]
+  ): F[GHResponse[Milestone]] = client.patch[MilestoneData, Milestone](
+    accessToken,
+    s"repos/$owner/$repo/milestones/$milestone_number",
+    headers,
+    data = MilestoneData(title, state, description, due_on)
+  )
+
+  override def deleteMilestone(
+      owner: String,
+      repo: String,
+      milestone_number: Int,
+      headers: Map[String, String]
+  ): F[GHResponse[Unit]] =
+    client.delete(accessToken, s"repos/$owner/$repo/milestones/$milestone_number", headers)
 }

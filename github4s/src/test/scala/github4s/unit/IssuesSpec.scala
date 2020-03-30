@@ -346,4 +346,48 @@ class IssuesSpec extends BaseSpec {
 
   }
 
+  "Issues.updateMilestone" should "call httpClient.patch with the right parameters" in {
+    val response: IO[GHResponse[Milestone]] =
+      IO(GHResponse(milestone.asRight, okStatusCode, Map.empty))
+
+    val request = MilestoneData(
+      validMilestoneTitle,
+      None,
+      None,
+      None
+    )
+
+    implicit val httpClientMock = httpClientMockPatch[MilestoneData, Milestone](
+      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validNumberMilestone",
+      req = request,
+      response = response
+    )
+
+    val issues = new IssuesInterpreter[IO]
+    issues.updatedMilestone(
+      validRepoOwner,
+      validRepoName,
+      validNumberMilestone,
+      validMilestoneTitle,
+      None,
+      None,
+      None,
+      headerUserAgent
+    )
+  }
+
+  "Issue.DeleteMilestone" should "call to httpClient.delete with the right parameters" in {
+
+    val response: IO[GHResponse[Unit]] =
+      IO(GHResponse(().asRight, deletedStatusCode, Map.empty))
+
+    implicit val httpClientMock = httpClientMockDelete(
+      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validNumberMilestone",
+      response = response
+    )
+
+    val issues = new IssuesInterpreter[IO]
+    issues.deleteMilestone(validRepoOwner, validRepoName, validNumberMilestone, headerUserAgent)
+  }
+
 }

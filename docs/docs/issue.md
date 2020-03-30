@@ -30,6 +30,8 @@ with Github4s, you can interact with:
 - [Milestones](#milestones)
   - [List milestones for a respository](#list-milestones-for-a-repository)
   - [Create milestone](#create-milestone)
+  - [Update a milestone](#update-a-milestone)
+  - [Delete a milestone](#delete-a-milestone)
 
 The following examples assume the following code:
 
@@ -461,5 +463,61 @@ response.result match {
 The `result` on the right is the corresponding [Milestone][milestone-scala]
 
 See [the API doc](https://developer.github.com/v3/issues/milestones/#create-a-milestone) for full reference.
+
+[milestone-scala]: https://github.com/47degrees/github4s/blob/master/github4s/src/main/scala/github4s/domain/Milestone.scala
+
+### Update a milestone
+
+You can update a milestone for a particular organization and repository with `updateMilestone`; it takes arguments:
+
+ - `owner`: name of the owner for which we want to create the milestones.
+ - `repo`: name of the repository for which we want to create the milestones.
+ - `milestone_number`: number of milestone.
+ - `state`: The state of the milestone. Either `open` or `closed`. Default: `open`, optional
+ - `title`: The title of the milestone.
+ - `description`: A description of the milestone, optional
+ - `due_on`: The milestone due date. This is a timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`, optional.
+ - `header`: headers to include in the request, optional.
+
+ To update a milestone for owner `47deg` and repository `github4s`:
+
+```scala mdoc:compile-only
+val milestone = gh.issues.updateMilestone("47degrees", "github4s",1 , "New milestone",Some("open"), None, None)
+val response = milestone.unsafeRunSync()
+response.result match {
+  case Left(e) => println(s"Something went wrong: ${e.getMessage}")
+  case Right(r) => println(r)
+}
+```
+
+The `result` on the right is the corresponding [Milestone][milestone-scala]
+
+See [the API doc](https://developer.github.com/v3/issues/milestones/#update-a-milestone) for full reference.
+
+[milestone-scala]: https://github.com/47degrees/github4s/blob/master/github4s/src/main/scala/github4s/domain/Milestone.scala
+
+### Delete milestone
+
+You can delete a milestone for a particular organization and repository with `deleteMilestone`; it takes arguments:
+
+ - `owner`: name of the owner for which we want to create the milestones.
+ - `repo`: name of the repository for which we want to create the milestones.
+ - `milestone_number`: number of milestone
+ - `header`: headers to include in the request, optional.
+
+ To delete a milestone for owner `47deg` and repository `github4s`:
+
+```scala mdoc:compile-only
+val milestone = gh.issues.deleteMilestone("47degrees", "github4s", 1)
+val response = milestone.unsafeRunSync()
+response.result match {
+  case Left(e) => println(s"Something went wrong: ${e.getMessage}")
+  case Right(r) => println(r)
+}
+```
+
+The `result` on the right is the corresponding [Milestone][milestone-scala]
+
+See [the API doc](https://developer.github.com/v3/issues/milestones/#delete-a-milestone) for full reference.
 
 [milestone-scala]: https://github.com/47degrees/github4s/blob/master/github4s/src/main/scala/github4s/domain/Milestone.scala
