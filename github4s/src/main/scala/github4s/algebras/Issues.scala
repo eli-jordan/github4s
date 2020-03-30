@@ -359,7 +359,7 @@ trait Issues[F[_]] {
       state: Option[String],
       description: Option[String],
       due_on: Option[ZonedDateTime],
-      headers: Map[String, String]
+      headers: Map[String, String] = Map()
   ): F[GHResponse[Milestone]]
 
   /**
