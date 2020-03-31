@@ -372,7 +372,7 @@ class IssuesSpec extends BaseSpec {
     )
 
     implicit val httpClientMock = httpClientMockPatch[MilestoneData, Milestone](
-      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validNumberMilestone",
+      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validMilestoneNumber",
       req = request,
       response = response
     )
@@ -381,7 +381,7 @@ class IssuesSpec extends BaseSpec {
     issues.updateMilestone(
       validRepoOwner,
       validRepoName,
-      validNumberMilestone,
+      validMilestoneNumber,
       validMilestoneTitle,
       None,
       None,
@@ -396,11 +396,11 @@ class IssuesSpec extends BaseSpec {
       IO(GHResponse(().asRight, deletedStatusCode, Map.empty))
 
     implicit val httpClientMock = httpClientMockDelete(
-      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validNumberMilestone",
+      url = s"repos/$validRepoOwner/$validRepoName/milestones/$validMilestoneNumber",
       response = response
     )
 
     val issues = new IssuesInterpreter[IO]
-    issues.deleteMilestone(validRepoOwner, validRepoName, validNumberMilestone, headerUserAgent)
+    issues.deleteMilestone(validRepoOwner, validRepoName, validMilestoneNumber, headerUserAgent)
   }
 }
