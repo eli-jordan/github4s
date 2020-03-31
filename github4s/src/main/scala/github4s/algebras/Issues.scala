@@ -351,7 +351,7 @@ trait Issues[F[_]] {
    * @param headers optional user headers to include in the request
    * @return a GHResponse with the updated Milestone
    */
-  def updatedMilestone(
+  def updateMilestone(
       owner: String,
       repo: String,
       milestone_number: Int,

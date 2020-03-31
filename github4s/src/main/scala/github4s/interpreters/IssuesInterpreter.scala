@@ -233,7 +233,7 @@ class IssuesInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Optio
       MilestoneData(title, state, description, due_on)
     )
 
-  override def updatedMilestone(
+  override def updateMilestone(
       owner: String,
       repo: String,
       milestone_number: Int,

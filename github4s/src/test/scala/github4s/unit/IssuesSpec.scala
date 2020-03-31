@@ -364,7 +364,7 @@ class IssuesSpec extends BaseSpec {
     )
 
     val issues = new IssuesInterpreter[IO]
-    issues.updatedMilestone(
+    issues.updateMilestone(
       validRepoOwner,
       validRepoName,
       validNumberMilestone,

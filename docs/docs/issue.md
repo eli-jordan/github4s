@@ -468,7 +468,7 @@ See [the API doc](https://developer.github.com/v3/issues/milestones/#create-a-mi
 
 ### Update a milestone
 
-You can update a milestone for a particular organization and repository with `updatedMilestone`; it takes arguments:
+You can update a milestone for a particular organization and repository with `updateMilestone`; it takes arguments:
 
  - `owner`: name of the owner for which we want to create the milestones.
  - `repo`: name of the repository for which we want to create the milestones.
@@ -482,7 +482,7 @@ You can update a milestone for a particular organization and repository with `up
  To update a milestone for owner `47deg` and repository `github4s`:
 
 ```scala mdoc:compile-only
-val milestone = gh.issues.updatedMilestone("47degrees", "github4s", 1 , "New milestone", Some("open"), None, None)
+val milestone = gh.issues.updateMilestone("47degrees", "github4s", 1 , "New milestone", Some("open"), None, None)
 val response = milestone.unsafeRunSync()
 response.result match {
   case Left(e) => println(s"Something went wrong: ${e.getMessage}")
