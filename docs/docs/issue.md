@@ -29,6 +29,7 @@ with Github4s, you can interact with:
   - [List available assignees](#list-available-assignees)
 - [Milestones](#milestones)
   - [List milestones for a respository](#list-milestones-for-a-repository)
+  - [Get a single milestone](#get-a-single-milestone)
   - [Create milestone](#create-milestone)
   - [Update a milestone](#update-a-milestone)
   - [Delete a milestone](#delete-a-milestone)
@@ -463,6 +464,32 @@ response.result match {
 The `result` on the right is the corresponding [Milestone][milestone-scala]
 
 See [the API doc](https://developer.github.com/v3/issues/milestones/#create-a-milestone) for full reference.
+
+[milestone-scala]: https://github.com/47degrees/github4s/blob/master/github4s/src/main/scala/github4s/domain/Milestone.scala
+
+### Get a single milestone
+
+You can also get a single milestone of a repository through `getMilestone`; it takes as arguments:
+
+- `owner`: name of the owner for which we want to retrieve the milestones.
+- `repo`: name of the repository for which we want to retrieve the milestones.
+- `number`: The milestone number.
+- `header`: headers to include in the request, optional.
+
+ To get milestone number 3254 for owner `47deg` and repository `github4s`:
+
+```scala mdoc:compile-only
+val milestone = gh.issues.getMilestone("47degrees", "github4s", 32)
+val response = milestone.unsafeRunSync()
+response.result match {
+  case Left(e) => println(s"Something went wrong: ${e.getMessage}")
+  case Right(r) => println(r)
+}
+```
+
+The `result` on the right is the corresponding [Milestone][milestone-scala]
+
+See [the API doc](https://developer.github.com/v3/issues/milestones/#get-a-single-milestone) for full reference.
 
 [milestone-scala]: https://github.com/47degrees/github4s/blob/master/github4s/src/main/scala/github4s/domain/Milestone.scala
 
