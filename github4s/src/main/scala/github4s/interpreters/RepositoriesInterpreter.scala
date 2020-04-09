@@ -16,17 +16,18 @@
 
 package github4s.interpreters
 
-import github4s.http.HttpClient
-import github4s.algebras.Repositories
 import cats.data.NonEmptyList
-import github4s.GithubResponses.GHResponse
-import github4s.domain._
+import com.github.marklister.base64.Base64._
 import github4s.Decoders._
 import github4s.Encoders._
-import com.github.marklister.base64.Base64._
+import github4s.GithubResponses.GHResponse
+import github4s.algebras.Repositories
+import github4s.domain._
+import github4s.http.HttpClient
+import io.circe.Json
 
 class RepositoriesInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Option[String])
-    extends Repositories[F] {
+  extends Repositories[F] {
   override def get(
       owner: String,
       repo: String,
@@ -259,4 +260,113 @@ class RepositoriesInterpreter[F[_]](implicit client: HttpClient[F], accessToken:
       headers,
       NewStatusRequest(state, target_url, description, context)
     )
+
+  override def listPullsForCommit(
+      owner: String,
+      repo: String,
+      sha: String,
+      headers: Map[String, String] = Map.empty
+  ): F[GHResponse[List[PullRequest]]] = {
+    client.get[List[PullRequest]](
+      accessToken = accessToken,
+      method = s"repos/$owner/$repo/commits/$sha/pulls",
+      headers = Map("Accept" -> "application/vnd.github.groot-preview+json") ++ headers
+    )
+  }
+
+  override def createDeployment(
+      owner: String,
+      repo: String,
+      ref: String,
+      task: Option[String],
+      environment: Option[String],
+      auto_merge: Option[Boolean],
+      required_contexts: Option[List[String]],
+      payload: Option[Json],
+      headers: Map[String, String]
+  ): F[GHResponse[Deployment]] = {
+    client.post[NewDeploymentRequest, Deployment](
+      accessToken = accessToken,
+      url = s"repos/$owner/$repo/deployments",
+      data = NewDeploymentRequest(
+        ref = ref,
+        task = task,
+        environment = environment,
+        auto_merge = auto_merge,
+        required_contexts = required_contexts,
+        payload = payload
+      ),
+      headers = headers
+    )
+  }
+
+  override def createDeploymentStatus(
+      owner: String,
+      repo: String,
+      deploymentId: Int,
+      environment: String,
+      state: DeploymentStatusState,
+      description: Option[String],
+      target_url: Option[String],
+      environment_url: Option[String],
+      auto_inactive: Option[Boolean],
+      headers: Map[String, String]
+  ): F[GHResponse[DeploymentStatus]] = {
+    client.post[NewDeploymentStatusRequest, DeploymentStatus](
+      accessToken = accessToken,
+      url = s"repos/$owner/$repo/deployments/$deploymentId/statuses",
+      data = NewDeploymentStatusRequest(
+        environment = Some(environment),
+        state = state,
+        description = description,
+        target_url = target_url,
+        environment_url = environment_url,
+        auto_inactive = auto_inactive
+      ),
+      headers = Map("Accept" -> "application/vnd.github.flash-preview+ant-man-preview+json") ++ headers
+    )
+  }
+
+  // /repos/:owner/:repo/deployments
+  override def listDeployments(
+      owner: String,
+      repo: String,
+      sha: Option[String],
+      ref: Option[String],
+      task: Option[String],
+      environment: Option[String],
+      pagination: Option[Pagination],
+      headers: Map[String, String]
+  ): F[GHResponse[List[Deployment]]] = {
+    client.get[List[Deployment]](
+      accessToken,
+      s"repos/$owner/$repo/deployments",
+      headers,
+      Map(
+        "sha"         -> sha,
+        "ref"         -> ref,
+        "task"        -> task,
+        "environment" -> environment,
+      ).collect {
+        case (key, Some(value)) => key -> value
+      },
+      pagination
+    )
+  }
+
+  override def listDeploymentStatuses(
+      owner: String,
+      repo: String,
+      deploymentId: Int,
+      pagination: Option[Pagination],
+      headers: Map[String, String]
+  ): F[GHResponse[List[DeploymentStatus]]] = {
+    client.get[List[DeploymentStatus]](
+      accessToken,
+      s"repos/$owner/$repo/deployments/$deploymentId/statuses",
+      headers ++ Map("Accept" -> "application/vnd.github.flash-preview+ant-man-preview+json"),
+      Map.empty,
+      pagination
+    )
+  }
 }

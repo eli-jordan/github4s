@@ -16,15 +16,15 @@
 
 package github4s.interpreters
 
-import github4s.http.HttpClient
-import github4s.algebras.PullRequests
-import github4s.GithubResponses.GHResponse
-import github4s.domain._
 import github4s.Decoders._
 import github4s.Encoders._
+import github4s.GithubResponses.GHResponse
+import github4s.algebras.PullRequests
+import github4s.domain._
+import github4s.http.HttpClient
 
 class PullRequestsInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Option[String])
-    extends PullRequests[F] {
+  extends PullRequests[F] {
 
   override def getPullRequest(
       owner: String,
@@ -111,4 +111,17 @@ class PullRequestsInterpreter[F[_]](implicit client: HttpClient[F], accessToken:
       s"repos/$owner/$repo/pulls/$pullRequest/reviews/$review",
       headers
     )
+
+  override def listCommits(
+      owner: String,
+      repo: String,
+      number: Int,
+      headers: Map[String, String]
+  ): F[GHResponse[List[Commit]]] = {
+    client.get[List[Commit]](
+      accessToken,
+      s"repos/$owner/$repo/pulls/$number/commits",
+      headers
+    )
+  }
 }
