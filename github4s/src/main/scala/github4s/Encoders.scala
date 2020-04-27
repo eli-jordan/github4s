@@ -70,19 +70,22 @@ object Encoders {
   implicit val encoderNewStatusRequest: Encoder[NewStatusRequest] = deriveEncoder[NewStatusRequest]
   implicit val encoderMilestoneData: Encoder[MilestoneData]       = deriveEncoder[MilestoneData]
 
-  implicit val encoderNewDeployment: Encoder[NewDeploymentRequest] = deriveEncoder[NewDeploymentRequest]
+  implicit val encoderNewDeployment: Encoder[NewDeploymentRequest] =
+    deriveEncoder[NewDeploymentRequest]
   implicit val deploymentStatusState: Encoder[DeploymentStatusState] =
     Encoder[String].contramap(_.name)
   implicit val encoderNewDeploymentStatus: Encoder[NewDeploymentStatusRequest] =
     deriveEncoder[NewDeploymentStatusRequest]
 
-  implicit val encodeCheckRunStatus: Encoder[CheckRunStatus]          = Encoder[String].contramap(_.name)
-  implicit val encodeCheckRunConclusion: Encoder[CheckRunConclusion]  = Encoder[String].contramap(_.name)
-  implicit val encodeCheckRun: Encoder[CheckRun]                      = deriveEncoder[CheckRun]
-  implicit val encodeCheckRunSuiteId: Encoder[CheckRunSuiteId]        = deriveEncoder[CheckRunSuiteId]
-  implicit val encodeCheckRunOutput: Encoder[CheckRunOutput]          = deriveEncoder[CheckRunOutput]
-  implicit val encoderCheckRunAnnotation: Encoder[CheckRunAnnotation] = deriveEncoder[CheckRunAnnotation]
-  implicit val encoderCheckRunImage: Encoder[CheckRunImage]           = deriveEncoder[CheckRunImage]
-  implicit val encoderCheckRunAction: Encoder[CheckRunAction]         = deriveEncoder[CheckRunAction]
+  implicit val encodeCheckRunStatus: Encoder[CheckRunStatus] = Encoder[String].contramap(_.name)
+  implicit val encodeCheckRunConclusion: Encoder[CheckRunConclusion] =
+    Encoder[String].contramap(_.name)
+  implicit val encodeCheckRun: Encoder[CheckRun]               = deriveEncoder[CheckRun]
+  implicit val encodeCheckRunSuiteId: Encoder[CheckRunSuiteId] = deriveEncoder[CheckRunSuiteId]
+  implicit val encodeCheckRunOutput: Encoder[CheckRunOutput]   = deriveEncoder[CheckRunOutput]
+  implicit val encoderCheckRunAnnotation: Encoder[CheckRunAnnotation] =
+    deriveEncoder[CheckRunAnnotation]
+  implicit val encoderCheckRunImage: Encoder[CheckRunImage]   = deriveEncoder[CheckRunImage]
+  implicit val encoderCheckRunAction: Encoder[CheckRunAction] = deriveEncoder[CheckRunAction]
 
 }

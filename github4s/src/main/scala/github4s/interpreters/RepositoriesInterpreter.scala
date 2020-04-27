@@ -27,7 +27,7 @@ import github4s.http.HttpClient
 import io.circe.Json
 
 class RepositoriesInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Option[String])
-  extends Repositories[F] {
+    extends Repositories[F] {
   override def get(
       owner: String,
       repo: String,
@@ -323,7 +323,8 @@ class RepositoriesInterpreter[F[_]](implicit client: HttpClient[F], accessToken:
         environment_url = environment_url,
         auto_inactive = auto_inactive
       ),
-      headers = Map("Accept" -> "application/vnd.github.flash-preview+ant-man-preview+json") ++ headers
+      headers =
+        Map("Accept" -> "application/vnd.github.flash-preview+ant-man-preview+json") ++ headers
     )
   }
 
@@ -346,7 +347,7 @@ class RepositoriesInterpreter[F[_]](implicit client: HttpClient[F], accessToken:
         "sha"         -> sha,
         "ref"         -> ref,
         "task"        -> task,
-        "environment" -> environment,
+        "environment" -> environment
       ).collect {
         case (key, Some(value)) => key -> value
       },

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2016-2020 47 Degrees, LLC. <http://www.47deg.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package github4s.domain
 
 sealed abstract class CheckRunStatus(val name: String) {
@@ -37,15 +53,17 @@ object CheckRunConclusion {
 }
 
 case class CheckRun(
-    name: String,
-    head_sha: String,
+    id: Option[Int] = None,
+    name: Option[String] = None,
+    head_sha: Option[String] = None,
     details_url: Option[String] = None,
+    external_id: Option[String] = None,
     external_url: Option[String] = None,
     status: CheckRunStatus,
-    started_at: Option[String] = None,
+    started_at: Option[Timestamp] = None,
     conclusion: Option[CheckRunConclusion] = None,
     check_suite: Option[CheckRunSuiteId] = None,
-    completed_at: Option[String] = None,
+    completed_at: Option[Timestamp] = None,
     output: Option[CheckRunOutput] = None,
     actions: Option[List[CheckRunAction]] = None
 )
@@ -53,8 +71,8 @@ case class CheckRun(
 case class CheckRunSuiteId(id: Int)
 
 case class CheckRunOutput(
-    title: Option[String],
-    summary: Option[String],
+    title: Option[String] = None,
+    summary: Option[String] = None,
     text: Option[String] = None,
     annotations: Option[List[CheckRunAnnotation]] = None,
     images: Option[List[CheckRunImage]] = None
@@ -89,7 +107,7 @@ case class App(
     name: String,
     description: String,
     owner: User,
-    slug: Option[String],
+    slug: Option[String]
 )
 
 case class CheckSuite(

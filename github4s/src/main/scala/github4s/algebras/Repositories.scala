@@ -24,13 +24,13 @@ import io.circe.Json
 trait Repositories[F[_]] {
 
   /**
-    * Get information of a particular repository
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[Repository] repository details
-    */
+   * Get information of a particular repository
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[Repository] repository details
+   */
   def get(
       owner: String,
       repo: String,
@@ -38,14 +38,14 @@ trait Repositories[F[_]] {
   ): F[GHResponse[Repository]]
 
   /**
-    * List the repositories for a particular organization
-    *
-    * @param org organization for which we wish to retrieve the repositories
-    * @param `type` visibility of the retrieved repositories, can be "all", "public", "private",
-    * "forks", "sources" or "member"
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[Repository]] the list of repositories for this organization
-    */
+   * List the repositories for a particular organization
+   *
+   * @param org organization for which we wish to retrieve the repositories
+   * @param `type` visibility of the retrieved repositories, can be "all", "public", "private",
+   * "forks", "sources" or "member"
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[Repository]] the list of repositories for this organization
+   */
   def listOrgRepos(
       org: String,
       `type`: Option[String] = None,
@@ -54,14 +54,14 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[Repository]]]
 
   /**
-    * List the repositories for a particular user
-    *
-    * @param user user for which we wish to retrieve the repositories
-    * @param `type` visibility of the retrieved repositories, can be "all", "public", "private",
-    * "forks", "sources" or "member"
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[Repository]] the list of repositories for this user
-    */
+   * List the repositories for a particular user
+   *
+   * @param user user for which we wish to retrieve the repositories
+   * @param `type` visibility of the retrieved repositories, can be "all", "public", "private",
+   * "forks", "sources" or "member"
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[Repository]] the list of repositories for this user
+   */
   def listUserRepos(
       user: String,
       `type`: Option[String] = None,
@@ -70,32 +70,32 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[Repository]]]
 
   /**
-    * Get the contents of a file or directory in a repository.
-    *
-    * The response could be a:
-    *  - file
-    *  - directory
-    *   The response will be an array of objects, one object for each item in the directory.
-    *   When listing the contents of a directory, submodules have their "type" specified as "file".
-    *  - symlink
-    *   If the requested :path points to a symlink, and the symlink's target is a normal file in the repository,
-    *   then the API responds with the content of the file.
-    *   Otherwise, the API responds with an object describing the symlink itself.
-    *  - submodule
-    *   The submodule_git_url identifies the location of the submodule repository,
-    *   and the sha identifies a specific commit within the submodule repository.
-    *   Git uses the given URL when cloning the submodule repository,
-    *   and checks out the submodule at that specific commit.
-    *   If the submodule repository is not hosted on github.com, the Git URLs (git_url and _links["git"])
-    *   and the github.com URLs (html_url and _links["html"]) will have null values
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param path the content path
-    * @param ref the name of the commit/branch/tag. Default: the repository’s default branch (usually `master`)
-    * @param headers optional user headers to include in the request
-    * @return GHResponse with the content defails
-    */
+   * Get the contents of a file or directory in a repository.
+   *
+   * The response could be a:
+   *  - file
+   *  - directory
+   *   The response will be an array of objects, one object for each item in the directory.
+   *   When listing the contents of a directory, submodules have their "type" specified as "file".
+   *  - symlink
+   *   If the requested :path points to a symlink, and the symlink's target is a normal file in the repository,
+   *   then the API responds with the content of the file.
+   *   Otherwise, the API responds with an object describing the symlink itself.
+   *  - submodule
+   *   The submodule_git_url identifies the location of the submodule repository,
+   *   and the sha identifies a specific commit within the submodule repository.
+   *   Git uses the given URL when cloning the submodule repository,
+   *   and checks out the submodule at that specific commit.
+   *   If the submodule repository is not hosted on github.com, the Git URLs (git_url and _links["git"])
+   *   and the github.com URLs (html_url and _links["html"]) will have null values
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param path the content path
+   * @param ref the name of the commit/branch/tag. Default: the repository’s default branch (usually `master`)
+   * @param headers optional user headers to include in the request
+   * @return GHResponse with the content defails
+   */
   def getContents(
       owner: String,
       repo: String,
@@ -105,18 +105,18 @@ trait Repositories[F[_]] {
   ): F[GHResponse[NonEmptyList[Content]]]
 
   /**
-    * Creates a new file in a repository.
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param path the content path
-    * @param content content in bytes, as they should be written to GitHub.
-    * @param message the message to be included in the commit.
-    * @param branch the branch name (defaults to the repository's default branch)
-    * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
-    * @param author object containing information about the author (filled in with committer information if omitted)
-    * @return GHResponse[WriteFileResponse] with details about the content created and the commit
-    */
+   * Creates a new file in a repository.
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param path the content path
+   * @param content content in bytes, as they should be written to GitHub.
+   * @param message the message to be included in the commit.
+   * @param branch the branch name (defaults to the repository's default branch)
+   * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
+   * @param author object containing information about the author (filled in with committer information if omitted)
+   * @return GHResponse[WriteFileResponse] with details about the content created and the commit
+   */
   def createFile(
       owner: String,
       repo: String,
@@ -130,19 +130,19 @@ trait Repositories[F[_]] {
   ): F[GHResponse[WriteFileResponse]]
 
   /**
-    * Updates an existing file in a repository.
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param path the content path
-    * @param message the message to be included in the commit.
-    * @param content the content of the file as it should be written to GitHub
-    * @param sha the blob sha of the file being replaced.
-    * @param branch the branch name (defaults to the repository's default branch)
-    * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
-    * @param author object containing information about the author (filled in with committer information if omitted)
-    * @return GHResponse[WriteFileResponse] with details about the content updated and the commit
-    */
+   * Updates an existing file in a repository.
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param path the content path
+   * @param message the message to be included in the commit.
+   * @param content the content of the file as it should be written to GitHub
+   * @param sha the blob sha of the file being replaced.
+   * @param branch the branch name (defaults to the repository's default branch)
+   * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
+   * @param author object containing information about the author (filled in with committer information if omitted)
+   * @return GHResponse[WriteFileResponse] with details about the content updated and the commit
+   */
   def updateFile(
       owner: String,
       repo: String,
@@ -157,18 +157,18 @@ trait Repositories[F[_]] {
   ): F[GHResponse[WriteFileResponse]]
 
   /**
-    * Deletes a file in a particular repo, resulting in a new commit.
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param path the content path
-    * @param message the message to be included in the commit.
-    * @param sha the blob sha of the file being replaced.
-    * @param branch the branch name (defaults to the repository's default branch)
-    * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
-    * @param author object containing information about the author (filled in with committer information if omitted)
-    * @return GHResponse[WriteFileResponse] with no content and details about the commit which was added.
-    */
+   * Deletes a file in a particular repo, resulting in a new commit.
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param path the content path
+   * @param message the message to be included in the commit.
+   * @param sha the blob sha of the file being replaced.
+   * @param branch the branch name (defaults to the repository's default branch)
+   * @param committer object containing information about the committer (filled in with authenticated user information if omitted)
+   * @param author object containing information about the author (filled in with committer information if omitted)
+   * @return GHResponse[WriteFileResponse] with no content and details about the commit which was added.
+   */
   def deleteFile(
       owner: String,
       repo: String,
@@ -182,19 +182,19 @@ trait Repositories[F[_]] {
   ): F[GHResponse[WriteFileResponse]]
 
   /**
-    * Retrieve the list of commits for a particular repo
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param sha branch to start listing commits from
-    * @param path commits containing this file path will be returned
-    * @param author GitHub login or email address by which to filter by commit author.
-    * @param since Only commits after this date will be returned
-    * @param until Only commits before this date will be returned
-    * @param pagination Limit and Offset for pagination
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[Commit]\] List of commit's details
-    */
+   * Retrieve the list of commits for a particular repo
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param sha branch to start listing commits from
+   * @param path commits containing this file path will be returned
+   * @param author GitHub login or email address by which to filter by commit author.
+   * @param since Only commits after this date will be returned
+   * @param until Only commits before this date will be returned
+   * @param pagination Limit and Offset for pagination
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[Commit]\] List of commit's details
+   */
   def listCommits(
       owner: String,
       repo: String,
@@ -208,14 +208,14 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[Commit]]]
 
   /**
-    * Retrieve list of branches for a repo
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param onlyProtected Setting to true returns only protected branches
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[Branch]\] List of branches
-    */
+   * Retrieve list of branches for a repo
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param onlyProtected Setting to true returns only protected branches
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[Branch]\] List of branches
+   */
   def listBranches(
       owner: String,
       repo: String,
@@ -224,15 +224,15 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[Branch]]]
 
   /**
-    * Fetch contributors list for the the specified repository,
-    * sorted by the number of commits per contributor in descending order.
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param anon Set to 1 or true to include anonymous contributors in results
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[User]\] List of contributors associated with the specified repository.
-    */
+   * Fetch contributors list for the the specified repository,
+   * sorted by the number of commits per contributor in descending order.
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param anon Set to 1 or true to include anonymous contributors in results
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[User]\] List of contributors associated with the specified repository.
+   */
   def listContributors(
       owner: String,
       repo: String,
@@ -241,18 +241,18 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[User]]]
 
   /**
-    * Fetch list of collaborators for the specified repository.
-    * For organization-owned repositories, the list of collaborators includes outside collaborators,
-    * organization members that are direct collaborators, organization members with access through team memberships,
-    * organization members with access through default organization permissions, and organization owners.
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param affiliation Filter collaborators returned by their affiliation. Can be one of `outside`, `direct`, `all`.
-    *                    Default: `all`
-    * @param headers optional user headers to include in the request
-    * @return GHResponse[List[User]\] List of collaborators within the specified repository
-    */
+   * Fetch list of collaborators for the specified repository.
+   * For organization-owned repositories, the list of collaborators includes outside collaborators,
+   * organization members that are direct collaborators, organization members with access through team memberships,
+   * organization members with access through default organization permissions, and organization owners.
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param affiliation Filter collaborators returned by their affiliation. Can be one of `outside`, `direct`, `all`.
+   *                    Default: `all`
+   * @param headers optional user headers to include in the request
+   * @return GHResponse[List[User]\] List of collaborators within the specified repository
+   */
   def listCollaborators(
       owner: String,
       repo: String,
@@ -261,24 +261,24 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[User]]]
 
   /**
-    * Create a new release
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param tagName the name of the tag.
-    * @param name the name of the release.
-    * @param body text describing the contents of the tag.
-    * @param targetCommitish specifies the commitish value that determines where the Git tag is created from.
-    * Can be any branch or commit SHA. Unused if the Git tag already exists.
-    * Default: the repository's default branch (usually `master`).
-    * @param draft `true` to create a draft (unpublished) release, `false` to createStatus a published one.
-    * Default: `false`
-    * @param prerelease `true` to identify the release as a prerelease.
-    * `false` to identify the release as a full release.
-    * Default: `false`
-    * @param headers optional user headers to include in the request
-    * @return a GHResponse with Release
-    */
+   * Create a new release
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param tagName the name of the tag.
+   * @param name the name of the release.
+   * @param body text describing the contents of the tag.
+   * @param targetCommitish specifies the commitish value that determines where the Git tag is created from.
+   * Can be any branch or commit SHA. Unused if the Git tag already exists.
+   * Default: the repository's default branch (usually `master`).
+   * @param draft `true` to create a draft (unpublished) release, `false` to createStatus a published one.
+   * Default: `false`
+   * @param prerelease `true` to identify the release as a prerelease.
+   * `false` to identify the release as a full release.
+   * Default: `false`
+   * @param headers optional user headers to include in the request
+   * @return a GHResponse with Release
+   */
   def createRelease(
       owner: String,
       repo: String,
@@ -292,14 +292,14 @@ trait Repositories[F[_]] {
   ): F[GHResponse[Release]]
 
   /**
-    * Get the combined status for a specific ref
-    *
-    * @param owner of the repo
-    * @param repo name of the commit
-    * @param ref commit SHA, branch name or tag name
-    * @param headers optional user headers to include in the request
-    * @return a GHResponse with the combined status
-    */
+   * Get the combined status for a specific ref
+   *
+   * @param owner of the repo
+   * @param repo name of the commit
+   * @param ref commit SHA, branch name or tag name
+   * @param headers optional user headers to include in the request
+   * @return a GHResponse with the combined status
+   */
   def getCombinedStatus(
       owner: String,
       repo: String,
@@ -308,14 +308,14 @@ trait Repositories[F[_]] {
   ): F[GHResponse[CombinedStatus]]
 
   /**
-    * List statuses for a commit
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param ref commit SHA, branch name or tag name
-    * @param headers optional user headers to include in the request
-    * @return a GHResponse with the status list
-    */
+   * List statuses for a commit
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param ref commit SHA, branch name or tag name
+   * @param headers optional user headers to include in the request
+   * @return a GHResponse with the status list
+   */
   def listStatuses(
       owner: String,
       repo: String,
@@ -324,18 +324,18 @@ trait Repositories[F[_]] {
   ): F[GHResponse[List[Status]]]
 
   /**
-    * Create a status
-    *
-    * @param owner of the repo
-    * @param repo name of the repo
-    * @param sha commit sha to create the status on
-    * @param target_url url to associate with the status, will appear in the GitHub UI
-    * @param state of the status: pending, success, error, or failure
-    * @param description of the status
-    * @param context identifier of the status maker
-    * @param headers optional user headers to include in the request
-    * @return a GHResopnse with the created Status
-    */
+   * Create a status
+   *
+   * @param owner of the repo
+   * @param repo name of the repo
+   * @param sha commit sha to create the status on
+   * @param target_url url to associate with the status, will appear in the GitHub UI
+   * @param state of the status: pending, success, error, or failure
+   * @param description of the status
+   * @param context identifier of the status maker
+   * @param headers optional user headers to include in the request
+   * @return a GHResopnse with the created Status
+   */
   def createStatus(
       owner: String,
       repo: String,

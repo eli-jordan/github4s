@@ -24,7 +24,7 @@ import github4s.domain._
 import github4s.http.HttpClient
 
 class PullRequestsInterpreter[F[_]](implicit client: HttpClient[F], accessToken: Option[String])
-  extends PullRequests[F] {
+    extends PullRequests[F] {
 
   override def getPullRequest(
       owner: String,
