@@ -32,7 +32,9 @@ final case class PullRequest(
     base: Option[PullRequestBase],
     head: Option[PullRequestBase],
     user: Option[User],
-    assignee: Option[User]
+    assignee: Option[User],
+    mergeable: Option[Boolean] = None,
+    mergeable_state: Option[String] = None
 )
 
 final case class PullRequestBase(
@@ -117,8 +119,8 @@ final case class PullRequestReview(
 )
 
 sealed abstract class PullRequestReviewState(val value: String)
-final case object PRRStateApproved         extends PullRequestReviewState("APPROVED")
-final case object PRRStateChangesRequested extends PullRequestReviewState("CHANGES_REQUESTED")
-final case object PRRStateCommented        extends PullRequestReviewState("COMMENTED")
-final case object PRRStatePending          extends PullRequestReviewState("PENDING")
-final case object PRRStateDismissed        extends PullRequestReviewState("DISMISSED")
+final case object PRRStateApproved         extends PullRequestReviewState("approved")
+final case object PRRStateChangesRequested extends PullRequestReviewState("changes_requested")
+final case object PRRStateCommented        extends PullRequestReviewState("commented")
+final case object PRRStatePending          extends PullRequestReviewState("pending")
+final case object PRRStateDismissed        extends PullRequestReviewState("dismissed")
